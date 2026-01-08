@@ -29,7 +29,7 @@ export default function RootLayout({ children }) {
         <SessionWrapper>
         <Navbar />
 
-        <div className="min-h-[84vh] [background:radial-gradient(125%_125%_at_50%_10%,#000_40%,#63e_100%)]">
+        <div className="min-h-[84vh] [background:radial-gradient(125%_125%_at_50%_10%,#000_40%,#63e_100%)] text-white">
           {children}
         </div>
         <Footer />
