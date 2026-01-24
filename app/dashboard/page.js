@@ -1,7 +1,8 @@
 "use client"
-import React from 'react'
+import React, { Component } from 'react'
 import { useSession, signIn, signOut } from 'next-auth/react'
 import { useRouter } from 'next/navigation'
+import Form from '../../components/form'
 
 const Dashboard = () => {
    const { data: session } = useSession()
@@ -10,9 +11,7 @@ const Dashboard = () => {
      router.push('/login')
        }
   return (
-    <div>
-      Dashboard
-    </div>
+    <Form/>
   )
 }
 

@@ -26,7 +26,7 @@ export default function RootLayout({ children }) {
         className="min-h-scre [background:radial-gradient(125%_125%_at_50%_10%,#000_40%,#63e_100%)] text-white"
       >
         <SessionWrapper>
-        <Navbar />
+        <Navbar/>
 
         <div className="min-h-scre [background:radial-gradient(125%_125%_at_50%_10%,#000_40%,#63e_100%)] text-white">
           {children}
