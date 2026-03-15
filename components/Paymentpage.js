@@ -1,14 +1,28 @@
 "use client"
-import React, {useState} from 'react'
+import React, {use, useEffect, useState} from 'react'
 import Script from 'next/script'
 import { useSession } from 'next-auth/react';
 import { initiate } from '../actions/useractions.js';
+import { fetchuser, fetchpayments} from '../actions/useractions.js';
 const Paymentpage = ({ username }) => {
      const [paymentform, setPaymentsform] = useState({})
+     const [currentUser, setcurrentUser] = useState({});
+     const [payments, setpayments] = useState([]);
+     useEffect(() => {
+        getData();
+     }, []);
     const handleChange = (e) => {
         setPaymentsform({ ...paymentform, [e.target.name]: e.target.value });
-        console.log(paymentform);
+    
     }
+const getData = async () => {
+    console.log("username", username);
+    let u = await fetchuser(username);    
+    setcurrentUser(u)
+    let dbpayments = await fetchpayments(username);
+    setpayments(dbpayments);
+    console.log(u, dbpayments);
+}
 
     const pay = async (amount) => {
         if(!paymentform.name || !paymentform.message) {
@@ -46,7 +60,7 @@ const Paymentpage = ({ username }) => {
     }
     return (
         <>
-            <button id="rzp-button1">Pay</button>
+            <button  id="rzp-button1" onClick={() => pay(10)}>Pay</button>
             <Script src="https://checkout.razorpay.com/v1/checkout.js"></Script>
 
 
@@ -68,14 +82,11 @@ const Paymentpage = ({ username }) => {
                         { /*show the list of Supporters*/}
                         <h2 className='font-bold text-lg my-3'>Supporters</h2>
                         <ul className='mx-4'>
-                            <li className="my-2 flex gap-2 items-center">
-                                <img className='rounded-full' width={27} src='/wired-flat-21-avatar-hover-jumping.gif'></img><span> Aditya donate<span className='font-bold'>$30</span>with a message "I support you lots of love ❤️"</span></li>
-                            <li className="my-2 flex gap-2 items-center">
-                                <img className='rounded-full' width={27} src='/wired-flat-21-avatar-hover-jumping.gif'></img><span> Aditya donate<span className='font-bold'>$30</span>with a message "I support you lots of love ❤️"</span></li>
-                            <li className="my-2 flex gap-2 items-center">
-                                <img className='rounded-full' width={27} src='/wired-flat-21-avatar-hover-jumping.gif'></img><span> Aditya donate<span className='font-bold'>$30</span>with a message "I support you lots of love ❤️"</span></li>
-                            <li className="my-2 flex gap-2 items-center">
-                                <img className='rounded-full' width={27} src='/wired-flat-21-avatar-hover-jumping.gif'></img><span> Aditya donate<span className='font-bold'>$30</span>with a message "I support you lots of love ❤️"</span></li>
+                            {payments.map((p, i) => {
+                            
+                            return <li key={i} className="my-2 flex gap-2 items-center">
+                                <img className='rounded-full' width={27} src='/wired-flat-21-avatar-hover-jumping.gif'></img><span> {p.name} donate<span className='font-bold'>${p.amount}</span>with a message  "{p.message}"</span></li>
+                            })}
 
                         </ul>
                     </div>
